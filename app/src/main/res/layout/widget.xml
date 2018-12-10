@@ -4,14 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <TextView
-        android:id="@+id/tv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#66e66857"
-        android:gravity="center"
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="8dp"
+        android:background="#09C"
+        android:contentDescription="@string/widget_text"
         android:text="@string/widget_text"
-        android:textColor="#000"
-        android:textSize="18sp">
-    </TextView>
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
+        />
+
 </RelativeLayout>
