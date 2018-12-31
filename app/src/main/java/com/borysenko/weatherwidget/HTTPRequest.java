@@ -18,11 +18,12 @@ public class HTTPRequest extends Thread {
     private static final String urlString =
             "https://xml.meteoservice.ru/export/gismeteo/point/25.xml";
 
-    String getInfoString() {
-        return output;
+    private List<Forecast> forecastList = null;
+
+    List<Forecast> getInfoString() {
+        return forecastList;
     }
 
-    private String output = "";
 
     private void requestData() {
         try {
@@ -37,12 +38,10 @@ public class HTTPRequest extends Thread {
             }
             in.close();
 
-            output = "output";
-            List<Forecast> forecastList = XMLParser.getData(response.toString());
+            forecastList = XMLParser.getData(response.toString());
 
         } catch (Exception e) {
             Log.e("http", e.toString());
-            output = e.toString();
         }
     }
 
