@@ -66,6 +66,19 @@ class XMLParser
 
                     case XmlPullParser.END_TAG:
                         if(xpp.getName().equals("FORECAST")) {
+
+                            if (Integer.valueOf(temperatureMax) > 0 ) {
+                                temperatureMax = "+" + temperatureMax;
+                            } else if (Integer.valueOf(temperatureMax) == 0 ) {
+                                temperatureMax = "0";
+                            }
+
+                            if(Integer.valueOf(temperatureMin) > 0) {
+                                temperatureMin = "+" + temperatureMin;
+                            } else if (Integer.valueOf(temperatureMin) == 0) {
+                                temperatureMin = "0";
+                            }
+
                             forecastList.add(new Forecast(month, day, hour,
                                     temperatureMax, temperatureMin,
                                     windSpeed, windDirection));

@@ -49,14 +49,12 @@ public class WeatherWidget extends AppWidgetProvider {
             Log.e("error", e.toString());
         }
 
-        String date = fList.get(0).getDay() + "." + fList.get(0).getMonth()
-                + " " + fList.get(0).getHour() + ":00";
-        String temperature = fList.get(0).getTemperatureMin() + " ... "
-                + fList.get(0).getTemperatureMax();
-        views.setTextViewText(R.id.date, date);
-        views.setTextViewText(R.id.temperature, temperature);
-        views.setTextViewText(R.id.wind_speed, fList.get(0).getWindSpeed());
-        views.setTextViewText(R.id.wind_direction, fList.get(0).getWindDirection());
+        views.setTextViewText(R.id.date, getDateTitle(fList.get(0).getDay(),
+                fList.get(0).getMonth(), fList.get(0).getHour()));
+        views.setTextViewText(R.id.temperature, getTempetatureTitle(fList.get(0).getTemperatureMin(),
+                fList.get(0).getTemperatureMax()));
+        views.setTextViewText(R.id.wind_speed, fList.get(0).getWindSpeed() + " м/с");
+        views.setTextViewText(R.id.wind_direction, getWindTitle(fList.get(0).getWindDirection()));
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
@@ -99,6 +97,7 @@ public class WeatherWidget extends AppWidgetProvider {
 
             HTTPRequest thread = new HTTPRequest();
             thread.start();
+
             try {
                 while (true) {
                     Thread.sleep(httpsDelayMs);
@@ -112,15 +111,14 @@ public class WeatherWidget extends AppWidgetProvider {
                 Log.e("error", e.toString());
             }
 
-
-            String date = forecastList.get(0).getDay() + "." + forecastList.get(0).getMonth()
-                    + " " + forecastList.get(0).getHour() + ":00";
-            String temperature = forecastList.get(0).getTemperatureMin() + " ... "
-                    + forecastList.get(0).getTemperatureMax();
-            remoteViews.setTextViewText(R.id.date, date);
-            remoteViews.setTextViewText(R.id.temperature, temperature);
-            remoteViews.setTextViewText(R.id.wind_speed, forecastList.get(0).getWindSpeed());
-            remoteViews.setTextViewText(R.id.wind_direction, forecastList.get(0).getWindDirection());
+            remoteViews.setTextViewText(R.id.date, getDateTitle(forecastList.get(0).getDay(),
+                    forecastList.get(0).getMonth(),forecastList.get(0).getHour()));
+            remoteViews.setTextViewText(R.id.temperature,
+                    getTempetatureTitle(forecastList.get(0).getTemperatureMin(),
+                            forecastList.get(0).getTemperatureMax()));
+            remoteViews.setTextViewText(R.id.wind_speed, forecastList.get(0).getWindSpeed() + " м/c");
+            remoteViews.setTextViewText(R.id.wind_direction,
+                    getWindTitle(forecastList.get(0).getWindDirection()));
 
             appWidgetManager.updateAppWidget(watchWidget, remoteViews);
         }
@@ -131,4 +129,38 @@ public class WeatherWidget extends AppWidgetProvider {
         intent.setAction(WeatherWidget.SYNC_CLICKED);
         return PendingIntent.getBroadcast(context, 0, intent, 0);
     }
+
+    private static String getTempetatureTitle(String temperatureMin, String temperatureMax) {
+        return " " + temperatureMin + " ... " + temperatureMax + " \u2103";
+    }
+
+    private static String getDateTitle(String day, String month, String hour) {
+        return day + "." + month + " " + hour + ":00";
+    }
+
+    private static String getWindTitle(String windDirection) {
+        switch(windDirection) {
+            case "0": windDirection = "северный";
+                break;
+            case "1": windDirection = "северо-восточный";
+                break;
+            case "2": windDirection = "восточный";
+                break;
+            case "3": windDirection = "юго-восточный";
+                break;
+            case "4": windDirection = "южный";
+                break;
+            case "5": windDirection = "юго-западный";
+                break;
+            case "6": windDirection = "западный";
+                break;
+            case "7": windDirection = "северо-западный";
+                break;
+            default: windDirection = "no data";
+                break;
+        }
+        return windDirection;
+    }
+
+
 }
